@@ -6,6 +6,8 @@ import '../controllers/favorites_controller.dart';
 import '../models/fipe_models.dart';
 import '../models/local_car.dart';
 import '../services/image_service.dart';
+import '../utils/fipe_price_parser.dart';
+
 
 class FipeDetailScreen extends StatefulWidget {
   const FipeDetailScreen({super.key});
@@ -26,17 +28,8 @@ class _FipeDetailScreenState extends State<FipeDetailScreen> {
     favorites = Get.put(FavoritesController());
   }
 
-  double _parseFipePrice(String valor) {
-    var cleaned = valor.replaceAll('R\$', '');
-    cleaned = cleaned.replaceAll('.', '');
-    cleaned = cleaned.replaceAll(' ', '');
-    cleaned = cleaned.replaceAll(',', '.');
-
-    return double.tryParse(cleaned) ?? 0.0;
-  }
-
   Future<void> _addToGarage(FipeVehicleDetail detail) async {
-    final price = _parseFipePrice(detail.valor);
+    final price = parseFipePrice(detail.valor);
     final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
     final car = LocalCar(
