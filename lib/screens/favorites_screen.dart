@@ -1,47 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../controllers/favorites_controller.dart';
-import '../models/fipe_models.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final FavoritesController fav = Get.put(FavoritesController());
+    // AQUI ESTAVA O ERRO — precisa ser Get.find()
+    final favorites = Get.find<FavoritesController>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favoritos'),
-      ),
+      appBar: AppBar(title: const Text('Favoritos')),
       body: Obx(() {
-        if (fav.favorites.isEmpty) {
-          return const Center(
-            child: Text('Nenhum carro favoritado ainda.'),
-          );
+        if (favorites.favorites.isEmpty) {
+          return const Center(child: Text("Sem favoritos"));
         }
 
-        return ListView.separated(
-          itemCount: fav.favorites.length,
-          separatorBuilder: (_, __) => const Divider(),
-          itemBuilder: (context, index) {
-            final FipeVehicleDetail car = fav.favorites[index];
-
-            final imageUrl =
-                'https://source.unsplash.com/featured/?car,${Uri.encodeComponent(car.modelo)}';
+        return ListView.builder(
+          itemCount: favorites.favorites.length,
+          itemBuilder: (_, index) {
+            final f = favorites.favorites[index];
+            final img = f["imageUrl"];
 
             return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(imageUrl),
-              ),
-              title: Text('${car.marca} ${car.modelo}'),
-              subtitle: Text('${car.anoModelo} • ${car.valor}'),
+              leading: img == null
+                  ? const Icon(Icons.car_rental, size: 40)
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.network(
+                        img,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) =>
+                            const Icon(Icons.broken_image),
+                      ),
+                    ),
+              title: Text("${f["marca"]} ${f["modelo"]}"),
+              subtitle: Text("Ano: ${f["ano"]} - Combustível: ${f["combustivel"]}"),
               trailing: IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: () {
-                  fav.removeFavorite(car);
-                },
+                icon: const Icon(Icons.delete),
+                onPressed: () => favorites.favorites.removeAt(index),
               ),
             );
           },

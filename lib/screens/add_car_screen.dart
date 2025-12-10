@@ -51,14 +51,14 @@ class _AddCarScreenState extends State<AddCarScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Carro salvo com sucesso!')),
+        const SnackBar(content: Text('Carro salvo')),
       );
-      
+
       Navigator.of(context).pop(true);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao salvar carro: $e')),
+        SnackBar(content: Text('Erro ao salvar carro $e')),
       );
     }
   }
@@ -87,7 +87,7 @@ class _AddCarScreenState extends State<AddCarScreen> {
                     return 'Informe o ID';
                   }
                   if (int.tryParse(value.trim()) == null) {
-                    return 'ID inválido';
+                    return 'ID incorreto';
                   }
                   return null;
                 },

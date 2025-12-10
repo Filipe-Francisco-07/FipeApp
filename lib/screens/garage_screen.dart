@@ -32,7 +32,7 @@ class _GarageScreenState extends State<GarageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Minha Garagem (PHP)'),
+        title: const Text('Garagem (PHP)'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -60,7 +60,7 @@ class _GarageScreenState extends State<GarageScreen> {
                   children: const [
                     SizedBox(height: 80),
                     Center(
-                      child: Text('Nenhum carro cadastrado ainda.'),
+                      child: Text('Sem carro na garagem'),
                     ),
                   ],
                 )

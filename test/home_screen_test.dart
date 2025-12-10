@@ -12,7 +12,7 @@ void main() {
     );
 
     expect(find.text('Consultar preço FIPE'), findsOneWidget);
-    expect(find.text('Minha Garagem (PC)'), findsOneWidget);
-    expect(find.text('Comparar veículos'), findsOneWidget);
+    expect(find.text('Garagem (PC)'), findsOneWidget);
+    expect(find.text('veículos'), findsOneWidget);
   });
 }

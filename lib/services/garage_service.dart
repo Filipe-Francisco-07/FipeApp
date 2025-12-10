@@ -29,11 +29,11 @@ class GarageService {
       },
       body: jsonEncode(car.toJson()),
     );
-    
+
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body) as List<dynamic>;
       if (data.isEmpty) {
-        throw Exception('Resposta vazia do servidor');
+        throw Exception('Erro do server');
       }
       return LocalCar.fromJson(data.first as Map<String, dynamic>);
     }

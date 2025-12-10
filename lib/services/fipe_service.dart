@@ -67,6 +67,6 @@ class FipeService {
       return FipeVehicleDetail.fromJson(data);
     }
 
-    throw Exception('Erro ao carregar detalhes do veículo FIPE');
+    throw Exception('Erro ao carregar detalhes do veículo');
   }
 }

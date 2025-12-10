@@ -1,57 +1,27 @@
-import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/fipe_models.dart';
 
 class FavoritesController extends GetxController {
-  RxList<FipeVehicleDetail> favorites = <FipeVehicleDetail>[].obs;
 
-  static const String storageKey = 'favorite_cars';
+  final RxList<Map<String, dynamic>> favorites = <Map<String, dynamic>>[].obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    loadFavorites();
+  bool isFavorite(FipeVehicleDetail detail) {
+    return favorites.any((f) => f["codigoFipe"] == detail.codigoFipe);
   }
 
-  Future<void> loadFavorites() async {
-    final prefs = await SharedPreferences.getInstance();
-    final jsonString = prefs.getString(storageKey);
-
-    if (jsonString != null) {
-      final List<dynamic> decoded = jsonDecode(jsonString);
-      favorites.value =
-          decoded.map((e) => FipeVehicleDetail.fromJson(e)).toList();
-    }
+  void addFavorite(FipeVehicleDetail detail, String? imageUrl) {
+    favorites.add({
+      "codigoFipe": detail.codigoFipe,
+      "marca": detail.marca,
+      "modelo": detail.modelo,
+      "ano": detail.anoModelo,
+      "preco": detail.valor,
+      "combustivel": detail.combustivel,
+      "imageUrl": imageUrl,
+    });
   }
 
-  Future<void> _saveToStorage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final jsonString =
-        jsonEncode(favorites.map((e) => e.toJson()).toList());
-    await prefs.setString(storageKey, jsonString);
-  }
-
-  Future<void> addFavorite(FipeVehicleDetail car) async {
-    if (!isFavorite(car)) {
-      favorites.add(car);
-      await _saveToStorage();
-    }
-  }
-
-  Future<void> removeFavorite(FipeVehicleDetail car) async {
-    favorites.removeWhere((e) =>
-        e.codigoFipe == car.codigoFipe &&
-        e.anoModelo == car.anoModelo &&
-        e.modelo == car.modelo);
-    await _saveToStorage();
-  }
-
-  bool isFavorite(FipeVehicleDetail car) {
-    return favorites.any((e) =>
-        e.codigoFipe == car.codigoFipe &&
-        e.anoModelo == car.anoModelo &&
-        e.modelo == car.modelo);
+  void removeFavorite(FipeVehicleDetail detail) {
+    favorites.removeWhere((f) => f["codigoFipe"] == detail.codigoFipe);
   }
 }

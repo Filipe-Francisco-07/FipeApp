@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  'AutoInsight FIPE',
+                  'Consulta FIPE',
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
